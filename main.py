@@ -33,13 +33,10 @@ def get_ini():
 @app.route('/movies', methods=['GET'])
 def get_movies():
     '''Function to get all the movies in the database'''
-    movies = Movie.query.all()
-    output = []
-    for mov in movies:
-        data = {'id': mov.id, 'titulo': mov.title, 'genre': mov.genre}
-        output.append(data)
-    return jsonify({"movies": output})
-
+    
+    usuarios_objetos = Movie.query.all()
+    movie_json = [movie.to_json() for movie in usuarios_objetos]
+    return jsonify({"movies": movie_json})
 
 # route to get movie by id
 @app.route('/movies/<int:id>', methods=['GET'])
@@ -47,9 +44,7 @@ def get_movie_by_id(id):
  
   ind = Movie.query.filter_by(id=id).first()
   movie_json = ind.to_json()
-  
   return jsonify({"movies":movie_json})
-
 
 # route to add new movie
 @app.route('/movies', methods=['POST'])
@@ -67,7 +62,6 @@ def add_movie():
       print("erro",e)
       return response
    
-
 # route to update movie with PUT method
 @app.route('/movies/<int:id>', methods=['PUT'])
 def update_movie(id):
@@ -83,7 +77,6 @@ def update_movie(id):
     response = Response("Movie Updated",status=200,mimetype='application/json')
     return response
 
-
 # route to delete movie using the DELETE method
 @app.route('/movies/<int:id>', methods=['DELETE'])
 def remove_movie(id):
@@ -92,6 +85,5 @@ def remove_movie(id):
     db.session.commit()
     response = Response("Movie Deleted",status=200,mimetype='application/json')
     return response
-
 
 app.run(debug=True, host='0.0.0.0', port='8080')
