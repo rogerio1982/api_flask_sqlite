@@ -45,7 +45,7 @@ def get_movie_by_id(id):
  
   ind = Movie.query.filter_by(id=id).first()
   movie_json = ind.to_json()
-  return jsonify({"movies":movie_json})
+  return jsonify(movie_json)
 
 # route to add new movie
 @app.route('/movies', methods=['POST'])
