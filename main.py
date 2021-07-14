@@ -37,7 +37,7 @@ def get_movies():
     
     usuarios_objetos = Movie.query.all()
     movie_json = [movie.to_json() for movie in usuarios_objetos]
-    return jsonify({"movies": movie_json})
+    return jsonify(movie_json)
 
 # route to get movie by id
 @app.route('/movies/<int:id>', methods=['GET'])
